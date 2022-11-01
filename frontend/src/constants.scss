@@ -1,0 +1,16 @@
+$prussian-blue: #012e40ff;
+$blue-sapphire: #025e73ff;
+$blue-green: #049dbfff;
+$dark-turquoise: #3bc9d9ff;
+$blizzard-blue: #bbedf2ff;
+$white: white;
+$black: black;
+
+$primary: $blue-green; // Used for the background of main elements that needs to be highlighted and the background of buttons
+$primary-light: $blizzard-blue; // Used for background to text boxes that pops up or need to stand out from white background
+$primary-dark: $blue-sapphire; // Used for sub-headings as a background colour
+$secondary: $prussian-blue; // Used for headings as a background colour
+
+$text-color: $black;
+$text-color-light: $white; // For use on dark backgrounds
+$site-background: $white;
