@@ -1,11 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Chorus } from "./components/chorus/Chorus";
+import { ContestListPage } from "./components/contest/ContestListPage";
+import { Footer } from "./components/footer/Footer";
 import { Home } from "./components/home/Home";
 import { Navbar } from "./components/navbar/Navbar";
-import { Footer } from "./components/footer/Footer";
 import { Quartet } from "./components/quartet/Quartet";
-import { Chorus } from "./components/chorus/Chorus";
-import { Contest } from "./components/contest/Contest";
 import { Song } from "./components/song/Song";
 
 const Routes: React.FunctionComponent = () => {
@@ -21,7 +21,7 @@ const Routes: React.FunctionComponent = () => {
         <Chorus />
       </Route>
       <Route exact path="/contests">
-        <Contest />
+        <ContestListPage />
       </Route>
       <Route exact path="/song">
         <Song />

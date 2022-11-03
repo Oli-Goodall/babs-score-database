@@ -1,12 +1,14 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using BabsScoreDatabase.Models.Database;
+using System.Collections.Generic;
 
 namespace BabsScoreDatabase.Repositories
 {
     public interface IContestRepo
     {
         Contest GetContestById(int contestId);
+        IEnumerable<Contest> GetAllContests();
     }
 
     public class ContestRepo : IContestRepo
@@ -16,6 +18,12 @@ namespace BabsScoreDatabase.Repositories
         public ContestRepo(BABSScoresDbContext context)
         {
             _context = context;
+        }
+
+        public IEnumerable<Contest> GetAllContests()
+        {
+            return _context.Contest
+                .Include(s => s.Name);
         }
 
         public Contest GetContestById(int contestId)
