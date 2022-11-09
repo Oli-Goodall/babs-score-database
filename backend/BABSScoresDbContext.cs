@@ -12,6 +12,7 @@ namespace BabsScoreDatabase
         public DbSet<Quartet> Quartet { get; set; }
         public DbSet<ScoreSet> ScoreSet { get; set; }
         public DbSet<Song> Song { get; set; }
+        public DbSet<Year> Year { get; set; }
 
         protected override void OnConfiguring(
             DbContextOptionsBuilder optionsBuilder

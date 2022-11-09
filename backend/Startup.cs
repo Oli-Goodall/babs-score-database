@@ -6,8 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-// using WhaleSpotting.Repositories;
-// using WhaleSpotting.Services;
+using BabsScoreDatabase.Repositories;
+using BabsScoreDatabase.Services;
 using System.Reflection;
 using System.IO;
 using System.Text.Json.Serialization;
@@ -54,18 +54,19 @@ namespace BabsScoreDatabase
         c.IncludeXmlComments(xmlPath);
       });
 
-      // services.AddDbContext<WhaleSpottingDbContext>();
+      services.AddDbContext<BABSScoresDbContext>();
 
-      // services.AddTransient<ILocationRepo, LocationRepo>();
-      // services.AddTransient<ISightingRepo, SightingRepo>();
-      // services.AddTransient<IUserRepo, UserRepo>();
-      // services.AddTransient<IWhaleRepo, WhaleRepo>();
+      services.AddTransient<IChorusRepo, ChorusRepo>();
+      services.AddTransient<IContestRepo, ContestRepo>();
+      services.AddTransient<IQuartetRepo, QuartetRepo>();
+      services.AddTransient<IScoreSetRepo, ScoreSetRepo>();
+      services.AddTransient<ISongRepo, SongRepo>();
 
-      // services.AddTransient<IAuthService, AuthService>();
-      // services.AddTransient<ILocationService, LocationService>(); 
-      // services.AddTransient<ISightingService, SightingService>();
-      // services.AddTransient<IUserService, UserService>();
-      // services.AddTransient<IWhaleService, WhaleService>();
+      services.AddTransient<IChorusService, ChorusService>();
+      services.AddTransient<IContestService, ContestService>();
+      services.AddTransient<IQuartetService, QuartetService>();
+      services.AddTransient<IScoreSetService, ScoreSetService>();
+      services.AddTransient<ISongService, SongService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the
@@ -92,20 +93,20 @@ namespace BabsScoreDatabase
 
       app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
-      // UpdateDatabase(app);
+      UpdateDatabase(app);
     }
 
-    // private void UpdateDatabase(IApplicationBuilder app)
-    // {
-    //   using (var serviceScope = app.ApplicationServices
-    //     .GetRequiredService<IServiceScopeFactory>()
-    //     .CreateScope())
-    //   {
-    //     using (var context = serviceScope.ServiceProvider.GetService<WhaleSpottingDbContext>())
-    //     {
-    //       context.Database.Migrate();
-    //     }
-    //   }
-    // }
+    private void UpdateDatabase(IApplicationBuilder app)
+    {
+      using (var serviceScope = app.ApplicationServices
+        .GetRequiredService<IServiceScopeFactory>()
+        .CreateScope())
+      {
+        using (var context = serviceScope.ServiceProvider.GetService<BABSScoresDbContext>())
+        {
+          context.Database.Migrate();
+        }
+      }
+    }
   }
 }

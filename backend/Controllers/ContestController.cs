@@ -20,7 +20,7 @@ namespace BabsScoreDatabase.Controllers
             _contests = contests;
         }
 
-        [HttpGet("{contestId}")]
+        [HttpGet]
         public ActionResult<ListResponse<Contest>> GetAllContests()
         {
             try
@@ -41,6 +41,20 @@ namespace BabsScoreDatabase.Controllers
             {
                 var contest = _contests.GetContestById(contestId);
                 return contest;
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("year/{contestYear}")]
+        public ActionResult<ListResponse<Contest>> GetContestsByYear([FromRoute] int contestYear)
+        {
+            try
+            {
+                var contests = _contests.GetContestsByYear(contestYear);
+                return new ListResponse<Contest>(contests);
             }
             catch (InvalidOperationException)
             {

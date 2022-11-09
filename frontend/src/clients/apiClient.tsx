@@ -6,12 +6,20 @@ export interface ListResponse<T> {
 
 export interface Contest {
     id: number;
-    year: number;
     name: string;
+    year: number;
+    contestType: number;
+    
 }
 
 export const getAllContests = async (): Promise<Contest[]> => {
-    const response = await fetch(`${backendUrl}/contests`);
+    const response = await fetch(`http://${backendUrl}/contests`);
+    const contestListResponse: ListResponse<Contest> = await response.json();
+    return contestListResponse.items;
+}
+
+export const getContestsByYear = async (year: string): Promise<Contest[]> => {
+    const response = await fetch(`http://${backendUrl}/contests/${year}`);
     const contestListResponse: ListResponse<Contest> = await response.json();
     return contestListResponse.items;
 }
