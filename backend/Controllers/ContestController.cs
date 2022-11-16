@@ -48,7 +48,7 @@ namespace BabsScoreDatabase.Controllers
             }
         }
 
-        [HttpGet("year/{contestYear}")]
+        [HttpGet("{contestYear}")]
         public ActionResult<ListResponse<Contest>> GetContestsByYear([FromRoute] int contestYear)
         {
             try

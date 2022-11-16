@@ -18,7 +18,7 @@ export const getAllContests = async (): Promise<Contest[]> => {
     return contestListResponse.items;
 }
 
-export const getContestsByYear = async (year: string): Promise<Contest[]> => {
+export const getContestsByYear = async (year: number): Promise<Contest[]> => {
     const response = await fetch(`http://localhost:5000/contests/${year}`);
     const contestListResponse: ListResponse<Contest> = await response.json();
     return contestListResponse.items;

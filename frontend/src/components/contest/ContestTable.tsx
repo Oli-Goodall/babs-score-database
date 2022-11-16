@@ -19,9 +19,9 @@ export const ContestTable: React.FunctionComponent<ContestTableProps> = ({ conte
     const [contestsOfTheYear, setContestsOfTheYear] = useState<Contest[]>();
 
     useEffect(() => {
-        getContestsByYear(contestYear.toString()).then(setContestsOfTheYear);
+        getContestsByYear(contestYear).then(setContestsOfTheYear);
     }, []);
-    console.log(contestsOfTheYear);
+    console.log(contestYear);
     if (contestsOfTheYear === undefined) {
         return <p>Loading...</p>;
       }
