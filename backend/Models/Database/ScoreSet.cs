@@ -8,8 +8,8 @@ namespace BabsScoreDatabase.Models.Database
         public int Mus { get; set; }
         public int Perf { get; set; }
         public int Sing { get; set; }
-        public int QuartetId {get; set; }
-        public int ChorusId { get; set; }
-        public int SongId { get; set; }
+        public Quartet Quartet {get; set; }
+        public Chorus Chorus { get; set; }
+        public Song Song { get; set; }
     }
 }

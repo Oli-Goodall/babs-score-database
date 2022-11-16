@@ -13,13 +13,13 @@ export interface Contest {
 }
 
 export const getAllContests = async (): Promise<Contest[]> => {
-    const response = await fetch(`http://${backendUrl}/contests`);
+    const response = await fetch(`http://localhost:5000/contests`);
     const contestListResponse: ListResponse<Contest> = await response.json();
     return contestListResponse.items;
 }
 
 export const getContestsByYear = async (year: string): Promise<Contest[]> => {
-    const response = await fetch(`http://${backendUrl}/contests/${year}`);
+    const response = await fetch(`http://localhost:5000/contests/${year}`);
     const contestListResponse: ListResponse<Contest> = await response.json();
     return contestListResponse.items;
 }

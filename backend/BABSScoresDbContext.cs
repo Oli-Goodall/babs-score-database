@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using BabsScoreDatabase.Models.Database;
 
+
 namespace BabsScoreDatabase
 {
     public class BABSScoresDbContext : DbContext
@@ -24,14 +25,16 @@ namespace BabsScoreDatabase
         private static string GetConnectionString()
         {
             var databaseUrl =
-                Environment.GetEnvironmentVariable("DATABASE_URL");
+                "postgres://BABSScoreDB:BABSScores@localhost:5432/BABSScoreDB";
+                // Environment.GetEnvironmentVariable("DATABASE_URL");
             if (databaseUrl == null)
             {
                 throw new Exception("Environment variable 'DATABASE_URL' must not be null");
             }
 
             bool useSsl = true;
-            var useSslVariable = Environment.GetEnvironmentVariable("USE_SSL");
+            var useSslVariable = "false"; 
+            // Environment.GetEnvironmentVariable("USE_SSL");
             if (useSslVariable != null)
             {
                 if (!Boolean.TryParse(useSslVariable, out useSsl))

@@ -23,6 +23,9 @@ const Routes: React.FunctionComponent = () => {
       <Route exact path="/contests">
         <ContestListPage />
       </Route>
+      <Route exact path="/contests/:yearId">
+        <ContestListPage />
+      </Route>
       <Route exact path="/song">
         <Song />
       </Route>
