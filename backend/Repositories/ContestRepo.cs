@@ -9,7 +9,7 @@ namespace BabsScoreDatabase.Repositories
     {
         Contest GetContestById(int contestId);
         IEnumerable<Contest> GetAllContests();
-        IEnumerable<Contest> GetContestsByYear(int contestYear);
+        // IEnumerable<Contest> GetContestsByYear(int contestYear);
     }
 
     public class ContestRepo : IContestRepo
@@ -33,13 +33,13 @@ namespace BabsScoreDatabase.Repositories
                 .Single(s => s.Id == contestId);
         }
 
-        public IEnumerable<Contest> GetContestsByYear(int contestYear)
-        {
-            return _context.Contest
-                .Include(s => s.Name)
-                .Include(s => s.ContestType)
-                .Include(s => s.Id)
-                .Where(s => s.Year.ContestYear == contestYear);
-        }
+        // public IEnumerable<Contest> GetContestsByYear(int contestYear)
+        // {
+        //     return _context.Contest
+        //         .Include(s => s.Name)
+        //         .Include(s => s.ContestType)
+        //         .Include(s => s.Id)
+        //         .Where(s => s.Year.ContestYear == contestYear);
+        // }
     }
 }

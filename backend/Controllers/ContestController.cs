@@ -48,18 +48,18 @@ namespace BabsScoreDatabase.Controllers
             }
         }
 
-        [HttpGet("{contestYear}")]
-        public ActionResult<ListResponse<Contest>> GetContestsByYear([FromRoute] int contestYear)
-        {
-            try
-            {
-                var contests = _contests.GetContestsByYear(contestYear);
-                return new ListResponse<Contest>(contests);
-            }
-            catch (InvalidOperationException)
-            {
-                return NotFound();
-            }
-        }
+        // [HttpGet("year/{contestYear}")]
+        // public ActionResult<ListResponse<Contest>> GetContestsByYear([FromRoute] int contestYear)
+        // {
+        //     try
+        //     {
+        //         var contests = _contests.GetContestsByYear(contestYear);
+        //         return new ListResponse<Contest>(contests);
+        //     }
+        //     catch (InvalidOperationException)
+        //     {
+        //         return NotFound();
+        //     }
+        // }
     }
 }

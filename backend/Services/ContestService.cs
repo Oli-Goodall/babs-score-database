@@ -8,7 +8,7 @@ namespace BabsScoreDatabase.Services
     {
         Contest GetContestById(int contestId);
         IEnumerable<Contest> GetAllContests();
-        IEnumerable<Contest> GetContestsByYear(int contestYear);
+        // IEnumerable<Contest> GetContestsByYear(int contestYear);
     }
 
     public class ContestService : IContestService
@@ -30,9 +30,9 @@ namespace BabsScoreDatabase.Services
             return _contest.GetContestById(contestId);
         }
 
-        public IEnumerable<Contest> GetContestsByYear(int contestYear)
-        {
-            return _contest.GetContestsByYear(contestYear);
-        }
+        // public IEnumerable<Contest> GetContestsByYear(int contestYear)
+        // {
+        //     return _contest.GetContestsByYear(contestYear);
+        // }
     }
 }
