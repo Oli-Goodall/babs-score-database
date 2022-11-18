@@ -11,5 +11,6 @@ namespace BabsScoreDatabase.Models.Database
         public Quartet Quartet {get; set; }
         public Chorus Chorus { get; set; }
         public Song Song { get; set; }
+        public Contest Contest { get; set; }
     }
 }

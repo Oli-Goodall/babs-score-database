@@ -22,13 +22,13 @@ export const Navbar: React.FunctionComponent = () => {
         <Link to="/" onClick={() => setIsExpanded(false)}>
           Home
         </Link>
-        <Link to="/Contests" onClick={() => setIsExpanded(false)}>
+        <Link to="/contests" onClick={() => setIsExpanded(false)}>
           Contests
         </Link>
         <Link to="/search" onClick={() => setIsExpanded(false)}>
           Search
         </Link>
-        <Link to="/conatc" onClick={() => setIsExpanded(false)}>
+        <Link to="/contact" onClick={() => setIsExpanded(false)}>
           Contact Us
         </Link>
       </ul>

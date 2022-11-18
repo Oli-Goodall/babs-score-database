@@ -29,25 +29,29 @@ export const ContestListPage: React.FunctionComponent = () => {
         <>
             <h1>Quartet Contests</h1>
             <div className="contest-list-page">
-                <TableContainer component={Paper}>
-                    <Table aria-label="contest table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>{contests[0].year.contestYear}</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {/* {contestsOfTheYear.map((contest) => ( */}
-                            <TableRow key={contests[0].name} >
-                                <TableCell>
-                                    <Link to={`/contest/${contests[0].id}`}>{contests[0].name}</Link>
-                                </TableCell>
-                            </TableRow>
-                            {/* ))
-                        }; */}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                {years.map(year => {
+                    return (<TableContainer component={Paper} key={year}>
+                        <Table aria-label="contest table">
+                            <TableHead>
+                                <TableRow key={year}>
+                                    <TableCell>{year}</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {contests.map(contest => {
+                                    if (contest.year.contestYear === year) {
+                                        return (<TableRow key={contest.name} >
+                                            <TableCell>
+                                                <Link to={`/contests/${contest.id}`}>{contest.name}</Link>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    )
+                })}
             </div>
         </>
     );
