@@ -8,5 +8,6 @@ namespace BabsScoreDatabase.Models.Database
         public string Name { get; set; }
         public ContestType ContestType { get; set; }
         public Year Year { get; set; }
+        public int PanelSize { get; set; }
     }
 }

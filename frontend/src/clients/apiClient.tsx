@@ -13,7 +13,7 @@ export interface Contest {
     name: string;
     year: Year;
     contestType: number;
-    
+    panelSize: number;
 }
 
 export interface ScoreSet {
@@ -24,6 +24,7 @@ export interface ScoreSet {
     quartet?: Quartet;
     chorus?: Chorus;
     song: Song;
+    contest: Contest;
 }
 
 export interface Quartet {

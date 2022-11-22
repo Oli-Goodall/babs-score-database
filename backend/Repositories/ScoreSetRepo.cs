@@ -1,12 +1,14 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using BabsScoreDatabase.Models.Database;
+using System.Collections.Generic;
 
 namespace BabsScoreDatabase.Repositories
 {
     public interface IScoreSetRepo
     {
         ScoreSet GetScoreSetById(int scoreSetId);
+        IEnumerable<ScoreSet> GetScoreSetsByContestId(int contestId);
     }
 
     public class ScoreSetRepo : IScoreSetRepo
@@ -25,6 +27,16 @@ namespace BabsScoreDatabase.Repositories
                 .Include(s => s.Perf)
                 .Include(s => s.Sing)
                 .Single(s => s.Id == scoreSetId);
+        }
+        
+        public IEnumerable<ScoreSet> GetScoreSetsByContestId(int contestId)
+        {
+            return _context.ScoreSet
+                .Include(s => s.Song)
+                .Include(s => s.Quartet)
+                .Include(s => s.Chorus)
+                .Include(s => s.Contest)
+                .Where(s => s.Contest.Id == contestId);
         }
     }
 }

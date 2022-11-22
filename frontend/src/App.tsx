@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Chorus } from "./components/chorus/Chorus";
 import { ContestListPage } from "./components/contest/ContestListPage";
+import { ContestPage } from "./components/contest/ContestPage";
 import { Footer } from "./components/footer/Footer";
 import { Home } from "./components/home/Home";
 import { Navbar } from "./components/navbar/Navbar";
@@ -23,8 +24,8 @@ const Routes: React.FunctionComponent = () => {
       <Route exact path="/contests">
         <ContestListPage />
       </Route>
-      <Route exact path="/contests/year/:yearId">
-        <ContestListPage />
+      <Route exact path="/contests/:contestId">
+        <ContestPage />
       </Route>
       <Route exact path="/song">
         <Song />

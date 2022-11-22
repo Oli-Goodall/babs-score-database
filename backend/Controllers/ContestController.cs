@@ -11,13 +11,16 @@ namespace BabsScoreDatabase.Controllers
     public class ContestController : ControllerBase
     {
         private readonly IContestService _contests;
+        private readonly IScoreSetService _scoreSets;
 
         public ContestController
         (
-            IContestService contests
+            IContestService contests,
+            IScoreSetService scoreSets
         )
         {
             _contests = contests;
+            _scoreSets = scoreSets;
         }
 
         [HttpGet]
@@ -35,31 +38,17 @@ namespace BabsScoreDatabase.Controllers
         }
 
         [HttpGet("{contestId}")]
-        public ActionResult<Contest> GetContestById([FromRoute] int contestId)
+        public ActionResult<ListResponse<ScoreSet>> GetScoreSetsByContestId([FromRoute] int contestId)
         {
             try
             {
-                var contest = _contests.GetContestById(contestId);
-                return contest;
+                var scoreSet = _scoreSets.GetScoreSetsByContestId(contestId);
+                return new ListResponse<ScoreSet>(scoreSet);
             }
             catch (InvalidOperationException)
             {
                 return NotFound();
             }
         }
-
-        // [HttpGet("year/{contestYear}")]
-        // public ActionResult<ListResponse<Contest>> GetContestsByYear([FromRoute] int contestYear)
-        // {
-        //     try
-        //     {
-        //         var contests = _contests.GetContestsByYear(contestYear);
-        //         return new ListResponse<Contest>(contests);
-        //     }
-        //     catch (InvalidOperationException)
-        //     {
-        //         return NotFound();
-        //     }
-        // }
     }
 }
