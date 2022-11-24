@@ -36,7 +36,8 @@ namespace BabsScoreDatabase.Repositories
                 .Include(s => s.Quartet)
                 .Include(s => s.Chorus)
                 .Include(s => s.Contest)
-                .Where(s => s.Contest.Id == contestId);
+                .Where(s => s.Contest.Id == contestId)
+                .OrderBy(s => s.Id);
         }
     }
 }

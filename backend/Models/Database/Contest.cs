@@ -9,5 +9,6 @@ namespace BabsScoreDatabase.Models.Database
         public ContestType ContestType { get; set; }
         public Year Year { get; set; }
         public int PanelSize { get; set; }
+        public int TotalRounds { get; set; }
     }
 }

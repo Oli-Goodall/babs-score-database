@@ -14,6 +14,7 @@ export interface Contest {
     year: Year;
     contestType: number;
     panelSize: number;
+    totalRounds: number;
 }
 
 export interface ScoreSet {
@@ -25,6 +26,7 @@ export interface ScoreSet {
     chorus?: Chorus;
     song: Song;
     contest: Contest;
+    roundNumber: number;
 }
 
 export interface Quartet {
