@@ -37,6 +37,34 @@ namespace BabsScoreDatabase.Controllers
             }
         }
 
+        [HttpGet("quartets/contestList")]
+        public ActionResult<ListResponse<Contest>> GetAllQuartetContests()
+        {
+            try
+            {
+                var contests = _contests.GetAllQuartetContests();
+                return new ListResponse<Contest>(contests);
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("choruses/contestList")]
+        public ActionResult<ListResponse<Contest>> GetAllChorusContests()
+        {
+            try
+            {
+                var contests = _contests.GetAllChorusContests();
+                return new ListResponse<Contest>(contests);
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
+        }
+
         [HttpGet("{contestId}")]
         public ActionResult<ListResponse<ScoreSet>> GetScoreSetsByContestId([FromRoute] int contestId)
         {

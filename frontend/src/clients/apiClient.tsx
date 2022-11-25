@@ -44,8 +44,14 @@ export interface Song {
     name: string;
 }
 
-export const getAllContests = async (): Promise<Contest[]> => {
-    const response = await fetch(`http://localhost:5000/contests`);
+export const getAllQuartetContests = async (): Promise<Contest[]> => {
+    const response = await fetch(`http://localhost:5000/contests/quartets/contestList`);
+    const contestListResponse: ListResponse<Contest> = await response.json();
+    return contestListResponse.items;
+}
+
+export const getAllChorusContests = async (): Promise<Contest[]> => {
+    const response = await fetch(`http://localhost:5000/contests/choruses/contestList`);
     const contestListResponse: ListResponse<Contest> = await response.json();
     return contestListResponse.items;
 }

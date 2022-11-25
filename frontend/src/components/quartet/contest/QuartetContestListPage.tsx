@@ -1,22 +1,20 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Contest, getAllContests } from "../../clients/apiClient";
+import { Contest, getAllQuartetContests } from "../../../clients/apiClient";
 import { Link } from "react-router-dom";
 
-export const ContestListPage: React.FunctionComponent = () => {
+export const QuartetContestListPage: React.FunctionComponent = () => {
     const [contests, setContests] = useState<Contest[]>();
     const years: number[] = [];
 
     useEffect(() => {
-        getAllContests().then(setContests);
+        getAllQuartetContests().then(setContests);
     }, []);
 
     contests?.forEach(contest => {
         if (years.indexOf(contest.year.contestYear) === -1) {
             years.push(contest.year.contestYear)
         }
-
-        console.log(years)
     })
 
 
@@ -42,7 +40,7 @@ export const ContestListPage: React.FunctionComponent = () => {
                                     if (contest.year.contestYear === year) {
                                         return (<TableRow key={contest.name} >
                                             <TableCell>
-                                                <Link to={`/contests/${contest.id}`}>{contest.name}</Link>
+                                                <Link to={`/quartets/contest/${contest.id}`}>{contest.name}</Link>
                                             </TableCell>
                                         </TableRow>
                                     )}

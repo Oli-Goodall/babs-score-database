@@ -22,8 +22,11 @@ export const Navbar: React.FunctionComponent = () => {
         <Link to="/" onClick={() => setIsExpanded(false)}>
           Home
         </Link>
-        <Link to="/contests" onClick={() => setIsExpanded(false)}>
-          Contests
+        <Link to="/quartets/contestlist" onClick={() => setIsExpanded(false)}>
+          Quartet Contests
+        </Link>
+        <Link to="/choruses/contestlist" onClick={() => setIsExpanded(false)}>
+          Chorus Contests
         </Link>
         <Link to="/search" onClick={() => setIsExpanded(false)}>
           Search
