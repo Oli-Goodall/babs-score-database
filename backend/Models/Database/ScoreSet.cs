@@ -13,5 +13,6 @@ namespace BabsScoreDatabase.Models.Database
         public Song Song { get; set; }
         public Contest Contest { get; set; }
         public int RoundNumber { get; set; }
+        public int Place { get; set; }
     }
 }

@@ -8,6 +8,7 @@ namespace BabsScoreDatabase.Services
     {
         ScoreSet GetScoreSetById(int scoreSetId);
         IEnumerable<ScoreSet> GetScoreSetsByContestId(int contestId);
+        IEnumerable<ScoreSet> GetScoreSetsByQuartetId(int quartetId);
     }
 
     public class ScoreSetService : IScoreSetService
@@ -27,6 +28,10 @@ namespace BabsScoreDatabase.Services
         public IEnumerable<ScoreSet> GetScoreSetsByContestId(int contestId)
         {
             return _scoreSet.GetScoreSetsByContestId(contestId);
+        }
+        public IEnumerable<ScoreSet> GetScoreSetsByQuartetId(int quartetId)
+        {
+            return _scoreSet.GetScoreSetsByQuartetId(quartetId);
         }
     }
 }

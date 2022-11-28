@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using BabsScoreDatabase.Models.Database;
 using BabsScoreDatabase.Services;
+using BabsScoreDatabase.Models.Response;
 
 namespace BabsScoreDatabase.Controllers
 {
@@ -10,22 +11,25 @@ namespace BabsScoreDatabase.Controllers
     public class QuartetController : ControllerBase
     {
         private readonly IQuartetService _quartets;
+        private readonly IScoreSetService _scoreSets;
 
         public QuartetController
         (
-            IQuartetService quartets
+            IQuartetService quartets,
+            IScoreSetService scoreSets
         )
         {
             _quartets = quartets;
+            _scoreSets = scoreSets;
         }
         
         [HttpGet("{quartetId}")]
-        public ActionResult<Quartet> GetQuartetById([FromRoute] int quartetId)
+        public ActionResult<ListResponse<ScoreSet>> GetScoreSetsByQuartetId([FromRoute] int quartetId)
         {
             try
             {
-                var quartet = _quartets.GetQuartetById(quartetId);
-                return quartet;
+                var scoreSet = _scoreSets.GetScoreSetsByQuartetId(quartetId);
+                return new ListResponse<ScoreSet>(scoreSet);
             }
             catch (InvalidOperationException)
             {

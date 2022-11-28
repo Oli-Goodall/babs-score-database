@@ -17,8 +17,6 @@ export const QuartetContestListPage: React.FunctionComponent = () => {
         }
     })
 
-
-
     if (contests === undefined) {
         return <p>Loading...</p>;
     }

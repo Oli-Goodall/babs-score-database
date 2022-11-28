@@ -1,6 +1,6 @@
 import { Switch, FormControlLabel, FormGroup, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { ScoreSet, getScoreSetsByContestId, Chorus } from "../../../clients/apiClient";
+import { ScoreSet, getScoreSetsByContestId, Chorus, totalMusCalculator, totalPerfCalculator, roundTotalMusCalculator, roundTotalPerfCalculator, roundTotalScoreCalculator, roundTotalSingCalculator, totalScoreCalculator, totalSingCalculator } from "../../../clients/apiClient";
 import { Link, useParams } from "react-router-dom";
 
 export const ChorusContestPage: React.FC = () => {
@@ -29,86 +29,6 @@ export const ChorusContestPage: React.FC = () => {
             choruses.push(scoreset.chorus)
         }
     })
-
-    const totalMusCalculator = (scoreSets: ScoreSet[], chorus: Chorus) => {
-        let totalMusScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.chorus?.id === chorus.id) {
-                totalMusScore += scoreSet.mus;
-            }
-        })
-        return (totalMusScore)
-    }
-
-    const totalPerfCalculator = (scoreSets: ScoreSet[], chorus: Chorus) => {
-        let totalPerfScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.chorus?.id === chorus.id) {
-                totalPerfScore += scoreSet.perf;
-            }
-        })
-        return (totalPerfScore)
-    }
-
-    const totalSingCalculator = (scoreSets: ScoreSet[], chorus: Chorus) => {
-        let totalSingScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.chorus?.id === chorus.id) {
-                totalSingScore += scoreSet.sing;
-            }
-        })
-        return (totalSingScore)
-    }
-
-    const totalScoreCalculator = (scoreSets: ScoreSet[], chorus: Chorus) => {
-        let totalScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.chorus?.id === chorus.id) {
-                totalScore += scoreSet.mus + scoreSet.perf + scoreSet.sing;
-            }
-        })
-        return (totalScore)
-    }
-
-    const roundTotalMusCalculator = (scoreSets: ScoreSet[], chorus: Chorus, roundNumber: number) => {
-        let roundTotalMusScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.chorus?.id === chorus.id && scoreSet.roundNumber === roundNumber) {
-                roundTotalMusScore += scoreSet.mus;
-            }
-        })
-        return (roundTotalMusScore)
-    }
-
-    const roundTotalPerfCalculator = (scoreSets: ScoreSet[], chorus: Chorus, roundNumber: number) => {
-        let roundTotalPerfScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.chorus?.id === chorus.id && scoreSet.roundNumber === roundNumber) {
-                roundTotalPerfScore += scoreSet.perf;
-            }
-        })
-        return (roundTotalPerfScore)
-    }
-
-    const roundTotalSingCalculator = (scoreSets: ScoreSet[], chorus: Chorus, roundNumber: number) => {
-        let roundTotalSingScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.chorus?.id === chorus.id && scoreSet.roundNumber === roundNumber) {
-                roundTotalSingScore += scoreSet.sing;
-            }
-        })
-        return (roundTotalSingScore)
-    }
-
-    const roundTotalScoreCalculator = (scoreSets: ScoreSet[], chorus: Chorus, roundNumber: number) => {
-        let roundTotalScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.chorus?.id === chorus.id && scoreSet.roundNumber === roundNumber) {
-                roundTotalScore += scoreSet.mus + scoreSet.perf + scoreSet.sing;
-            }
-        })
-        return (roundTotalScore)
-    }
 
     if (scoreSets === undefined) {
         return <p>Loading...</p>;
@@ -265,10 +185,10 @@ export const ChorusContestPage: React.FC = () => {
                                         <TableCell>Chorus</TableCell>
                                         <TableCell>Round</TableCell>
                                         <TableCell>Songs</TableCell>
-                                        <TableCell>Mus</TableCell>
-                                        <TableCell>Perf</TableCell>
-                                        <TableCell>Sing</TableCell>
-                                        <TableCell>Total</TableCell>
+                                        <TableCell>Mus %</TableCell>
+                                        <TableCell>Perf %</TableCell>
+                                        <TableCell>Sing %</TableCell>
+                                        <TableCell>Total %</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 {choruses.map(chorus => {
@@ -346,10 +266,10 @@ export const ChorusContestPage: React.FC = () => {
                                         <TableCell>Chorus</TableCell>
                                         <TableCell>Round</TableCell>
                                         <TableCell>Songs</TableCell>
-                                        <TableCell>Mus</TableCell>
-                                        <TableCell>Perf</TableCell>
-                                        <TableCell>Sing</TableCell>
-                                        <TableCell>Total</TableCell>
+                                        <TableCell>Mus %</TableCell>
+                                        <TableCell>Perf %</TableCell>
+                                        <TableCell>Sing %</TableCell>
+                                        <TableCell>Total %</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 {choruses.map(chorus => {

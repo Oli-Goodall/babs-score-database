@@ -1,6 +1,6 @@
 import { Switch, FormControlLabel, FormGroup, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { ScoreSet, getScoreSetsByContestId, Quartet } from "../../../clients/apiClient";
+import { ScoreSet, getScoreSetsByContestId, Quartet, totalMusCalculator, totalPerfCalculator, roundTotalMusCalculator, roundTotalPerfCalculator, roundTotalScoreCalculator, roundTotalSingCalculator, totalScoreCalculator, totalSingCalculator } from "../../../clients/apiClient";
 import { Link, useParams } from "react-router-dom";
 
 export const QuartetContestPage: React.FC = () => {
@@ -30,84 +30,13 @@ export const QuartetContestPage: React.FC = () => {
         }
     })
 
-    const totalMusCalculator = (scoreSets: ScoreSet[], quartet: Quartet) => {
-        let totalMusScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.quartet?.id === quartet.id) {
-                totalMusScore += scoreSet.mus;
-            }
+    function placeFinder(scoreSets: ScoreSet[], quartet: Quartet) {
+        const currentQuartet = scoreSets.find(element => {
+            return element?.quartet?.id === quartet.id
         })
-        return (totalMusScore)
-    }
-
-    const totalPerfCalculator = (scoreSets: ScoreSet[], quartet: Quartet) => {
-        let totalPerfScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.quartet?.id === quartet.id) {
-                totalPerfScore += scoreSet.perf;
-            }
-        })
-        return (totalPerfScore)
-    }
-
-    const totalSingCalculator = (scoreSets: ScoreSet[], quartet: Quartet) => {
-        let totalSingScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.quartet?.id === quartet.id) {
-                totalSingScore += scoreSet.sing;
-            }
-        })
-        return (totalSingScore)
-    }
-
-    const totalScoreCalculator = (scoreSets: ScoreSet[], quartet: Quartet) => {
-        let totalScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.quartet?.id === quartet.id) {
-                totalScore += scoreSet.mus + scoreSet.perf + scoreSet.sing;
-            }
-        })
-        return (totalScore)
-    }
-
-    const roundTotalMusCalculator = (scoreSets: ScoreSet[], quartet: Quartet, roundNumber: number) => {
-        let roundTotalMusScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.quartet?.id === quartet.id && scoreSet.roundNumber === roundNumber) {
-                roundTotalMusScore += scoreSet.mus;
-            }
-        })
-        return (roundTotalMusScore)
-    }
-
-    const roundTotalPerfCalculator = (scoreSets: ScoreSet[], quartet: Quartet, roundNumber: number) => {
-        let roundTotalPerfScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.quartet?.id === quartet.id && scoreSet.roundNumber === roundNumber) {
-                roundTotalPerfScore += scoreSet.perf;
-            }
-        })
-        return (roundTotalPerfScore)
-    }
-
-    const roundTotalSingCalculator = (scoreSets: ScoreSet[], quartet: Quartet, roundNumber: number) => {
-        let roundTotalSingScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.quartet?.id === quartet.id && scoreSet.roundNumber === roundNumber) {
-                roundTotalSingScore += scoreSet.sing;
-            }
-        })
-        return (roundTotalSingScore)
-    }
-
-    const roundTotalScoreCalculator = (scoreSets: ScoreSet[], quartet: Quartet, roundNumber: number) => {
-        let roundTotalScore = 0;
-        scoreSets.forEach(scoreSet => {
-            if (scoreSet.quartet?.id === quartet.id && scoreSet.roundNumber === roundNumber) {
-                roundTotalScore += scoreSet.mus + scoreSet.perf + scoreSet.sing;
-            }
-        })
-        return (roundTotalScore)
+        return (
+            currentQuartet?.place
+        )
     }
 
     if (scoreSets === undefined) {
@@ -139,7 +68,7 @@ export const QuartetContestPage: React.FC = () => {
                             {quartets.map(quartet => {
                                 return (<TableBody key={quartet.name}>
                                     <TableRow>
-                                        <TableCell rowSpan={8}>{quartets.indexOf(quartet) + 1}</TableCell>
+                                        <TableCell rowSpan={8}>{placeFinder(scoreSets, quartet)}</TableCell>
                                         <TableCell rowSpan={8}>
                                             <Link to={`/quartets/${quartet.id}`}>{quartet.name}</Link>
                                         </TableCell>
@@ -220,7 +149,7 @@ export const QuartetContestPage: React.FC = () => {
                             {quartets.map(quartet => {
                                 return (<TableBody key={quartet.name}>
                                     <TableRow>
-                                        <TableCell rowSpan={8}>{quartets.indexOf(quartet) + 1}</TableCell>
+                                        <TableCell rowSpan={8}>{placeFinder(scoreSets, quartet)}</TableCell>
                                         <TableCell rowSpan={8}>
                                             <Link to={`/quartets/${quartet.id}`}>{quartet.name}</Link>
                                         </TableCell>
@@ -265,16 +194,16 @@ export const QuartetContestPage: React.FC = () => {
                                         <TableCell>Quartet</TableCell>
                                         <TableCell>Round</TableCell>
                                         <TableCell>Songs</TableCell>
-                                        <TableCell>Mus</TableCell>
-                                        <TableCell>Perf</TableCell>
-                                        <TableCell>Sing</TableCell>
-                                        <TableCell>Total</TableCell>
+                                        <TableCell>Mus %</TableCell>
+                                        <TableCell>Perf %</TableCell>
+                                        <TableCell>Sing %</TableCell>
+                                        <TableCell>Total %</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 {quartets.map(quartet => {
                                     return (<TableBody key={quartet.name}>
                                         <TableRow>
-                                            <TableCell rowSpan={8}>{quartets.indexOf(quartet) + 1}</TableCell>
+                                            <TableCell rowSpan={8}>{placeFinder(scoreSets, quartet)}</TableCell>
                                             <TableCell rowSpan={8}>
                                                 <Link to={`/quartets/${quartet.id}`}>{quartet.name}</Link>
                                             </TableCell>
@@ -346,16 +275,16 @@ export const QuartetContestPage: React.FC = () => {
                                         <TableCell>Quartet</TableCell>
                                         <TableCell>Round</TableCell>
                                         <TableCell>Songs</TableCell>
-                                        <TableCell>Mus</TableCell>
-                                        <TableCell>Perf</TableCell>
-                                        <TableCell>Sing</TableCell>
-                                        <TableCell>Total</TableCell>
+                                        <TableCell>Mus %</TableCell>
+                                        <TableCell>Perf %</TableCell>
+                                        <TableCell>Sing %</TableCell>
+                                        <TableCell>Total %</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 {quartets.map(quartet => {
                                     return (<TableBody key={quartet.name}>
                                         <TableRow>
-                                            <TableCell rowSpan={8}>{quartets.indexOf(quartet) + 1}</TableCell>
+                                            <TableCell rowSpan={8}>{placeFinder(scoreSets, quartet)}</TableCell>
                                             <TableCell rowSpan={8}>
                                                 <Link to={`/quartets/${quartet.id}`}>{quartet.name}</Link>
                                             </TableCell>

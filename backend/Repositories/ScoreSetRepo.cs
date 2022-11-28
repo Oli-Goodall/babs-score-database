@@ -9,6 +9,7 @@ namespace BabsScoreDatabase.Repositories
     {
         ScoreSet GetScoreSetById(int scoreSetId);
         IEnumerable<ScoreSet> GetScoreSetsByContestId(int contestId);
+        IEnumerable<ScoreSet> GetScoreSetsByQuartetId(int quartetId);
     }
 
     public class ScoreSetRepo : IScoreSetRepo
@@ -37,7 +38,18 @@ namespace BabsScoreDatabase.Repositories
                 .Include(s => s.Chorus)
                 .Include(s => s.Contest)
                 .Where(s => s.Contest.Id == contestId)
-                .OrderBy(s => s.Id);
+                .OrderBy(s => s.Place);
+        }
+
+        public IEnumerable<ScoreSet> GetScoreSetsByQuartetId(int quartetId)
+        {
+            return _context.ScoreSet
+                .Include(s => s.Song)
+                .Include(s => s.Quartet)
+                .Include(s => s.Chorus)
+                .Include(s => s.Contest)
+                .Where(s => s.Quartet.Id == quartetId)
+                .OrderBy(s => s.Place);
         }
     }
 }

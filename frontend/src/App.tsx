@@ -6,7 +6,7 @@ import { QuartetContestPage } from "./components/quartet/contest/QuartetContestP
 import { Footer } from "./components/footer/Footer";
 import { Home } from "./components/home/Home";
 import { Navbar } from "./components/navbar/Navbar";
-import { Quartet } from "./components/quartet/Quartet";
+import { QuartetPage } from "./components/quartet/Quartet";
 import { Song } from "./components/song/Song";
 import { ChorusContestPage } from "./components/chorus/contest/ChorusContestPage";
 import { ChorusContestListPage } from "./components/chorus/contest/ChorusContestListPage";
@@ -17,11 +17,11 @@ const Routes: React.FunctionComponent = () => {
       <Route exact path="/">
         <Home />
       </Route>
-      <Route exact path="/quartets">
-        <Quartet />
-      </Route>
       <Route exact path="/quartets/contestlist">
         <QuartetContestListPage />
+      </Route>      
+      <Route exact path="/quartets/:quartetId">
+        <QuartetPage />
       </Route>
       <Route exact path="/quartets/contest/:contestId">
         <QuartetContestPage />
