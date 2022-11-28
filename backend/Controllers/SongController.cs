@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using BabsScoreDatabase.Models.Database;
 using BabsScoreDatabase.Services;
+using BabsScoreDatabase.Models.Response;
 
 namespace BabsScoreDatabase.Controllers
 {
@@ -10,22 +11,25 @@ namespace BabsScoreDatabase.Controllers
     public class SongController : ControllerBase
     {
         private readonly ISongService _songs;
+        private readonly IScoreSetService _scoreSets;
 
         public SongController
         (
-            ISongService songs
+            ISongService songs,
+            IScoreSetService scoreSets
         )
         {
             _songs = songs;
+            _scoreSets = scoreSets;
         }
         
         [HttpGet("{songId}")]
-        public ActionResult<Song> GetSongById([FromRoute] int songId)
+        public ActionResult<ListResponse<ScoreSet>> GetScoreSetsBySongId([FromRoute] int songId)
         {
             try
             {
-                var song = _songs.GetSongById(songId);
-                return song;
+                var scoreSet = _scoreSets.GetScoreSetsBySongId(songId);
+                return new ListResponse<ScoreSet>(scoreSet);
             }
             catch (InvalidOperationException)
             {

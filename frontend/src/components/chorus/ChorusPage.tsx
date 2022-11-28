@@ -1,20 +1,31 @@
-import { Switch, FormControlLabel, FormGroup, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { ScoreSet, getScoreSetsByContestId, Chorus, totalMusCalculator, totalPerfCalculator, roundTotalMusCalculator, roundTotalPerfCalculator, roundTotalScoreCalculator, roundTotalSingCalculator, totalScoreCalculator, totalSingCalculator } from "../../../clients/apiClient";
+import { ScoreSet, getScoreSetsByChorusId, Chorus, totalMusCalculator, totalPerfCalculator, roundTotalMusCalculator, roundTotalPerfCalculator, roundTotalScoreCalculator, roundTotalSingCalculator, totalScoreCalculator, totalSingCalculator, Contest } from "../../clients/apiClient";
 import { Link, useParams } from "react-router-dom";
+import { Switch, FormGroup, FormControlLabel, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 
-export const ChorusContestPage: React.FC = () => {
+export const ChorusPage: React.FunctionComponent = () => {
     const [scoreSets, setScoreSets] = useState<ScoreSet[]>();
     const [showRawScores, setShowRawScores] = useState(false);
-    const choruses: Chorus[] = [];
+    let currentChorus: Chorus = {
+        id: 0,
+        name: ''
+    };
+    const contests: Contest[] = [];
 
-    const { contestId } = useParams<{ contestId: string }>();
+    const { chorusId } = useParams<{ chorusId: string }>();
 
     useEffect(() => {
-        getScoreSetsByContestId(parseInt(contestId)).then(setScoreSets);
+        getScoreSetsByChorusId(parseInt(chorusId)).then(setScoreSets);
     }, []);
 
-    function containsObject(obj: Chorus, list: Chorus[]) {
+    if (scoreSets !== undefined) {
+            currentChorus = {
+                id: scoreSets[0].chorus?.id,
+                name: scoreSets[0].chorus?.name
+            }
+        }
+
+    function containsObject(obj: Contest, list: Contest[]) {
         let i;
         for (i in list) {
             if (list[i].id === obj.id) {
@@ -25,19 +36,12 @@ export const ChorusContestPage: React.FC = () => {
     }
 
     scoreSets?.forEach(scoreset => {
-        if (scoreset.chorus !== undefined && containsObject(scoreset.chorus, choruses) === false) {
-            choruses.push(scoreset.chorus)
+        if (scoreset.chorus !== undefined && containsObject(scoreset.contest, contests) === false) {
+            contests.push(scoreset.contest)
         }
     })
 
-    function placeFinder(scoreSets: ScoreSet[], chorus: Chorus) {
-        const currentChorus = scoreSets.find(element => {
-            return element?.chorus?.id === chorus.id
-        })
-        return (
-            currentChorus?.place
-        )
-    }
+    console.log(scoreSets, contests);
 
     if (scoreSets === undefined) {
         return <p>Loading...</p>;
@@ -45,7 +49,7 @@ export const ChorusContestPage: React.FC = () => {
 
     return (
         <>
-            <h1>{scoreSets[0].contest.name}</h1>
+            <h1>{scoreSets[0].chorus?.name}</h1>
             <FormGroup>
                 <FormControlLabel control={<Switch onChange={() => { setShowRawScores(!showRawScores) }} />} label="Show raw scores" />
             </FormGroup>
@@ -55,8 +59,8 @@ export const ChorusContestPage: React.FC = () => {
                         <Table aria-label="contest-table">
                             <TableHead>
                                 <TableRow>
+                                    <TableCell>Contest</TableCell>
                                     <TableCell>Place</TableCell>
-                                    <TableCell>Chorus</TableCell>
                                     <TableCell>Round</TableCell>
                                     <TableCell>Songs</TableCell>
                                     <TableCell>Mus</TableCell>
@@ -65,32 +69,32 @@ export const ChorusContestPage: React.FC = () => {
                                     <TableCell>Total</TableCell>
                                 </TableRow>
                             </TableHead>
-                            {choruses.map(chorus => {
-                                return (<TableBody key={chorus.name}>
+                            {contests.map(contest => {
+                                return (<TableBody key={contest.name}>
                                     <TableRow>
-                                        <TableCell rowSpan={8}>{placeFinder(scoreSets, chorus)}</TableCell>
                                         <TableCell rowSpan={8}>
-                                            <Link to={`/choruses/${chorus.id}`}>{chorus.name}</Link>
+                                            <Link to={`/choruses/contest/${contest.id}`}>{contest.name}</Link>
                                         </TableCell>
+                                        <TableCell rowSpan={8}>{scoreSets[0].place}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>Total</TableCell>
                                         <TableCell />
-                                        <TableCell>{totalMusCalculator(scoreSets, chorus)}</TableCell>
-                                        <TableCell>{totalPerfCalculator(scoreSets, chorus)}</TableCell>
-                                        <TableCell>{totalSingCalculator(scoreSets, chorus)}</TableCell>
-                                        <TableCell>{totalScoreCalculator(scoreSets, chorus)}</TableCell>
+                                        <TableCell>{totalMusCalculator(scoreSets, currentChorus)}</TableCell>
+                                        <TableCell>{totalPerfCalculator(scoreSets, currentChorus)}</TableCell>
+                                        <TableCell>{totalSingCalculator(scoreSets, currentChorus)}</TableCell>
+                                        <TableCell>{totalScoreCalculator(scoreSets, currentChorus)}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>Finals</TableCell>
                                         <TableCell />
-                                        <TableCell>{roundTotalMusCalculator(scoreSets, chorus, 1)}</TableCell>
-                                        <TableCell>{roundTotalPerfCalculator(scoreSets, chorus, 1)}</TableCell>
-                                        <TableCell>{roundTotalSingCalculator(scoreSets, chorus, 1)}</TableCell>
-                                        <TableCell>{roundTotalScoreCalculator(scoreSets, chorus, 1)}</TableCell>
+                                        <TableCell>{roundTotalMusCalculator(scoreSets, currentChorus, 1)}</TableCell>
+                                        <TableCell>{roundTotalPerfCalculator(scoreSets, currentChorus, 1)}</TableCell>
+                                        <TableCell>{roundTotalSingCalculator(scoreSets, currentChorus, 1)}</TableCell>
+                                        <TableCell>{roundTotalScoreCalculator(scoreSets, currentChorus, 1)}</TableCell>
                                     </TableRow>
                                     {scoreSets.map(scoreSet => {
-                                        if (scoreSet.roundNumber === 1 && scoreSet.chorus?.id === chorus.id) {
+                                        if (scoreSet.roundNumber === 1 && scoreSet.chorus?.id === currentChorus?.id) {
                                             return (<TableRow key={scoreSet.song.name}>
                                                 <TableCell />
                                                 <TableCell>
@@ -106,13 +110,13 @@ export const ChorusContestPage: React.FC = () => {
                                     <TableRow>
                                         <TableCell>Semi-finals</TableCell>
                                         <TableCell />
-                                        <TableCell>{roundTotalMusCalculator(scoreSets, chorus, 2)}</TableCell>
-                                        <TableCell>{roundTotalPerfCalculator(scoreSets, chorus, 2)}</TableCell>
-                                        <TableCell>{roundTotalSingCalculator(scoreSets, chorus, 2)}</TableCell>
-                                        <TableCell>{roundTotalScoreCalculator(scoreSets, chorus, 2)}</TableCell>
+                                        <TableCell>{roundTotalMusCalculator(scoreSets, currentChorus, 2)}</TableCell>
+                                        <TableCell>{roundTotalPerfCalculator(scoreSets, currentChorus, 2)}</TableCell>
+                                        <TableCell>{roundTotalSingCalculator(scoreSets, currentChorus, 2)}</TableCell>
+                                        <TableCell>{roundTotalScoreCalculator(scoreSets, currentChorus, 2)}</TableCell>
                                     </TableRow>
                                     {scoreSets.map(scoreSet => {
-                                        if (scoreSet.roundNumber === 2 && scoreSet.chorus?.id === chorus.id) {
+                                        if (scoreSet.roundNumber === 2 && scoreSet.chorus?.id === currentChorus?.id) {
                                             return (<TableRow key={scoreSet.song.name}>
                                                 <TableCell />
                                                 <TableCell>
@@ -136,8 +140,8 @@ export const ChorusContestPage: React.FC = () => {
                         <Table aria-label="contest table">
                             <TableHead>
                                 <TableRow>
+                                    <TableCell>Contest</TableCell>
                                     <TableCell>Place</TableCell>
-                                    <TableCell>Chorus</TableCell>
                                     <TableCell>Round</TableCell>
                                     <TableCell>Songs</TableCell>
                                     <TableCell>Mus</TableCell>
@@ -146,24 +150,24 @@ export const ChorusContestPage: React.FC = () => {
                                     <TableCell>Total</TableCell>
                                 </TableRow>
                             </TableHead>
-                            {choruses.map(chorus => {
-                                return (<TableBody key={chorus.name}>
+                            {contests.map(contest => {
+                                return (<TableBody key={contest.name}>
                                     <TableRow>
-                                        <TableCell rowSpan={8}>{placeFinder(scoreSets, chorus)}</TableCell>
                                         <TableCell rowSpan={8}>
-                                            <Link to={`/choruses/${chorus.id}`}>{chorus.name}</Link>
+                                            <Link to={`/choruses/contest/${contest.id}`}>{contest.name}</Link>
                                         </TableCell>
+                                        <TableCell rowSpan={8}>{scoreSets[0].place}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>Total</TableCell>
                                         <TableCell />
-                                        <TableCell>{totalMusCalculator(scoreSets, chorus)}</TableCell>
-                                        <TableCell>{totalPerfCalculator(scoreSets, chorus)}</TableCell>
-                                        <TableCell>{totalSingCalculator(scoreSets, chorus)}</TableCell>
-                                        <TableCell>{totalScoreCalculator(scoreSets, chorus)}</TableCell>
+                                        <TableCell>{totalMusCalculator(scoreSets, currentChorus)}</TableCell>
+                                        <TableCell>{totalPerfCalculator(scoreSets, currentChorus)}</TableCell>
+                                        <TableCell>{totalSingCalculator(scoreSets, currentChorus)}</TableCell>
+                                        <TableCell>{totalScoreCalculator(scoreSets, currentChorus)}</TableCell>
                                     </TableRow>
                                     {scoreSets.map(scoreSet => {
-                                        if (scoreSet.chorus?.id === chorus.id) {
+                                        if (scoreSet.contest.id === contest.id) {
                                             return (<TableRow key={scoreSet.song.name}>
                                                 <TableCell />
                                                 <TableCell>
@@ -190,8 +194,8 @@ export const ChorusContestPage: React.FC = () => {
                             <Table aria-label="contest-table">
                                 <TableHead>
                                     <TableRow>
+                                        <TableCell>Contest</TableCell>
                                         <TableCell>Place</TableCell>
-                                        <TableCell>Chorus</TableCell>
                                         <TableCell>Round</TableCell>
                                         <TableCell>Songs</TableCell>
                                         <TableCell>Mus %</TableCell>
@@ -200,32 +204,32 @@ export const ChorusContestPage: React.FC = () => {
                                         <TableCell>Total %</TableCell>
                                     </TableRow>
                                 </TableHead>
-                                {choruses.map(chorus => {
-                                    return (<TableBody key={chorus.name}>
+                                {contests.map(contest => {
+                                    return (<TableBody key={contest.name}>
                                         <TableRow>
-                                            <TableCell rowSpan={8}>{placeFinder(scoreSets, chorus)}</TableCell>
                                             <TableCell rowSpan={8}>
-                                                <Link to={`/choruses/${chorus.id}`}>{chorus.name}</Link>
+                                                <Link to={`/choruses/contest/${contest.id}`}>{contest.name}</Link>
                                             </TableCell>
+                                            <TableCell rowSpan={8}>{scoreSets[0].place}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>Total</TableCell>
                                             <TableCell />
-                                            <TableCell>{(((totalMusCalculator(scoreSets, chorus)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((totalPerfCalculator(scoreSets, chorus)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((totalSingCalculator(scoreSets, chorus)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((totalScoreCalculator(scoreSets, chorus)) / 4) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalMusCalculator(scoreSets, currentChorus)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalPerfCalculator(scoreSets, currentChorus)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalSingCalculator(scoreSets, currentChorus)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalScoreCalculator(scoreSets, currentChorus)) / 4) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>Finals</TableCell>
                                             <TableCell />
-                                            <TableCell>{(((roundTotalMusCalculator(scoreSets, chorus, 1)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((roundTotalPerfCalculator(scoreSets, chorus, 1)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((roundTotalSingCalculator(scoreSets, chorus, 1)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((roundTotalScoreCalculator(scoreSets, chorus, 1)) / 2) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalMusCalculator(scoreSets, currentChorus, 1)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalPerfCalculator(scoreSets, currentChorus, 1)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalSingCalculator(scoreSets, currentChorus, 1)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalScoreCalculator(scoreSets, currentChorus, 1)) / 2) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
                                         </TableRow>
                                         {scoreSets.map(scoreSet => {
-                                            if (scoreSet.roundNumber === 1 && scoreSet.chorus?.id === chorus.id) {
+                                            if (scoreSet.roundNumber === 1 && scoreSet.chorus?.id === currentChorus?.id) {
                                                 return (<TableRow key={scoreSet.song.name}>
                                                     <TableCell />
                                                     <TableCell>
@@ -241,13 +245,13 @@ export const ChorusContestPage: React.FC = () => {
                                         <TableRow>
                                             <TableCell>Semi-finals</TableCell>
                                             <TableCell />
-                                            <TableCell>{(((roundTotalMusCalculator(scoreSets, chorus, 2)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((roundTotalPerfCalculator(scoreSets, chorus, 2)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((roundTotalSingCalculator(scoreSets, chorus, 2)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((roundTotalScoreCalculator(scoreSets, chorus, 2)) / 2) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalMusCalculator(scoreSets, currentChorus, 2)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalPerfCalculator(scoreSets, currentChorus, 2)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalSingCalculator(scoreSets, currentChorus, 2)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalScoreCalculator(scoreSets, currentChorus, 2)) / 2) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
                                         </TableRow>
                                         {scoreSets.map(scoreSet => {
-                                            if (scoreSet.roundNumber === 2 && scoreSet.chorus?.id === chorus.id) {
+                                            if (scoreSet.roundNumber === 2 && scoreSet.chorus?.id === currentChorus?.id) {
                                                 return (<TableRow key={scoreSet.song.name}>
                                                     <TableCell />
                                                     <TableCell>
@@ -271,8 +275,8 @@ export const ChorusContestPage: React.FC = () => {
                             <Table aria-label="contest table">
                                 <TableHead>
                                     <TableRow>
+                                        <TableCell>Contest</TableCell>
                                         <TableCell>Place</TableCell>
-                                        <TableCell>Chorus</TableCell>
                                         <TableCell>Round</TableCell>
                                         <TableCell>Songs</TableCell>
                                         <TableCell>Mus %</TableCell>
@@ -281,24 +285,24 @@ export const ChorusContestPage: React.FC = () => {
                                         <TableCell>Total %</TableCell>
                                     </TableRow>
                                 </TableHead>
-                                {choruses.map(chorus => {
-                                    return (<TableBody key={chorus.name}>
+                                {contests.map(contest => {
+                                    return (<TableBody key={contest.name}>
                                         <TableRow>
-                                            <TableCell rowSpan={8}>{placeFinder(scoreSets, chorus)}</TableCell>
                                             <TableCell rowSpan={8}>
-                                                <Link to={`/choruses/${chorus.id}`}>{chorus.name}</Link>
+                                                <Link to={`/choruses/contest/${contest.id}`}>{contest.name}</Link>
                                             </TableCell>
+                                            <TableCell rowSpan={8}>{scoreSets[0].place}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>Total</TableCell>
                                             <TableCell />
-                                            <TableCell>{(((totalMusCalculator(scoreSets, chorus)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((totalPerfCalculator(scoreSets, chorus)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((totalSingCalculator(scoreSets, chorus)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((totalScoreCalculator(scoreSets, chorus)) / 4) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalMusCalculator(scoreSets, currentChorus)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalPerfCalculator(scoreSets, currentChorus)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalSingCalculator(scoreSets, currentChorus)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalScoreCalculator(scoreSets, currentChorus)) / 4) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
                                         </TableRow>
                                         {scoreSets.map(scoreSet => {
-                                            if (scoreSet.chorus?.id === chorus.id) {
+                                            if (scoreSet.chorus?.id === currentChorus?.id) {
                                                 return (<TableRow key={scoreSet.song.name}>
                                                     <TableCell />
                                                     <TableCell>
@@ -317,5 +321,5 @@ export const ChorusContestPage: React.FC = () => {
                         </TableContainer>}
                 </div>)}
         </>
-    )
-}
+    );
+};

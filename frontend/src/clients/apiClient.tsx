@@ -36,8 +36,8 @@ export interface Quartet {
 }
 
 export interface Chorus {
-    id: number;
-    name: string;
+    id: number | undefined;
+    name: string | undefined;
 }
 
 export interface Song {
@@ -175,6 +175,18 @@ export const getScoreSetsByContestId = async (id: number): Promise<ScoreSet[]> =
 
 export const getScoreSetsByQuartetId = async (id: number): Promise<ScoreSet[]> => {
     const response = await fetch(`http://localhost:5000/quartets/${id}`);
+    const contestListResponse: ListResponse<ScoreSet> = await response.json();
+    return contestListResponse.items;
+}
+
+export const getScoreSetsByChorusId = async (id: number): Promise<ScoreSet[]> => {
+    const response = await fetch(`http://localhost:5000/choruses/${id}`);
+    const contestListResponse: ListResponse<ScoreSet> = await response.json();
+    return contestListResponse.items;
+}
+
+export const getScoreSetsBySongId = async (id: number): Promise<ScoreSet[]> => {
+    const response = await fetch(`http://localhost:5000/songs/${id}`);
     const contestListResponse: ListResponse<ScoreSet> = await response.json();
     return contestListResponse.items;
 }
