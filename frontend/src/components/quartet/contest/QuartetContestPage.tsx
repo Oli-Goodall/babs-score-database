@@ -1,6 +1,6 @@
 import { Switch, FormControlLabel, FormGroup, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { ScoreSet, getScoreSetsByContestId, Quartet, totalMusCalculator, totalPerfCalculator, roundTotalMusCalculator, roundTotalPerfCalculator, roundTotalScoreCalculator, roundTotalSingCalculator, totalScoreCalculator, totalSingCalculator } from "../../../clients/apiClient";
+import { ScoreSet, getScoreSetsByContestId, Quartet, totalMusCalculator, totalPerfCalculator, roundTotalMusCalculator, roundTotalPerfCalculator, roundTotalScoreCalculator, roundTotalSingCalculator, totalScoreCalculator, totalSingCalculator, placementFinder } from "../../../clients/apiClient";
 import { Link, useParams } from "react-router-dom";
 
 export const QuartetContestPage: React.FC = () => {
@@ -30,15 +30,6 @@ export const QuartetContestPage: React.FC = () => {
         }
     })
 
-    function placeFinder(scoreSets: ScoreSet[], quartet: Quartet) {
-        const currentQuartet = scoreSets.find(element => {
-            return element?.quartet?.id === quartet.id
-        })
-        return (
-            currentQuartet?.place
-        )
-    }
-
     if (scoreSets === undefined) {
         return <p>Loading...</p>;
     }
@@ -50,25 +41,25 @@ export const QuartetContestPage: React.FC = () => {
                 <FormControlLabel control={<Switch onChange={() => { setShowRawScores(!showRawScores) }} />} label="Show raw scores" />
             </FormGroup>
             {showRawScores ? (<div className="contest-page">
-                {scoreSets[0].contest.totalRounds === 2 ?
-                    <TableContainer component={Paper}>
-                        <Table aria-label="contest-table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Place</TableCell>
-                                    <TableCell>Quartet</TableCell>
-                                    <TableCell>Round</TableCell>
-                                    <TableCell>Songs</TableCell>
-                                    <TableCell>Mus</TableCell>
-                                    <TableCell>Perf</TableCell>
-                                    <TableCell>Sing</TableCell>
-                                    <TableCell>Total</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            {quartets.map(quartet => {
+                <TableContainer component={Paper}>
+                    <Table aria-label="contest-table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Place</TableCell>
+                                <TableCell>Quartet</TableCell>
+                                <TableCell>Round</TableCell>
+                                <TableCell>Songs</TableCell>
+                                <TableCell>Mus</TableCell>
+                                <TableCell>Perf</TableCell>
+                                <TableCell>Sing</TableCell>
+                                <TableCell>Total</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        {quartets.map(quartet => {
+                            if (scoreSets[0].contest.totalRounds === 2) {
                                 return (<TableBody key={quartet.name}>
                                     <TableRow>
-                                        <TableCell rowSpan={8}>{placeFinder(scoreSets, quartet)}</TableCell>
+                                        <TableCell rowSpan={8}>{placementFinder(scoreSets, scoreSets[0].contest, quartet)}</TableCell>
                                         <TableCell rowSpan={8}>
                                             <Link to={`/quartets/${quartet.id}`}>{quartet.name}</Link>
                                         </TableCell>
@@ -76,18 +67,18 @@ export const QuartetContestPage: React.FC = () => {
                                     <TableRow>
                                         <TableCell>Total</TableCell>
                                         <TableCell />
-                                        <TableCell>{totalMusCalculator(scoreSets, quartet)}</TableCell>
-                                        <TableCell>{totalPerfCalculator(scoreSets, quartet)}</TableCell>
-                                        <TableCell>{totalSingCalculator(scoreSets, quartet)}</TableCell>
-                                        <TableCell>{totalScoreCalculator(scoreSets, quartet)}</TableCell>
+                                        <TableCell>{totalMusCalculator(scoreSets, quartet, scoreSets[0].contest.id)}</TableCell>
+                                        <TableCell>{totalPerfCalculator(scoreSets, quartet, scoreSets[0].contest.id)}</TableCell>
+                                        <TableCell>{totalSingCalculator(scoreSets, quartet, scoreSets[0].contest.id)}</TableCell>
+                                        <TableCell>{totalScoreCalculator(scoreSets, quartet, scoreSets[0].contest.id)}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>Finals</TableCell>
                                         <TableCell />
-                                        <TableCell>{roundTotalMusCalculator(scoreSets, quartet, 1)}</TableCell>
-                                        <TableCell>{roundTotalPerfCalculator(scoreSets, quartet, 1)}</TableCell>
-                                        <TableCell>{roundTotalSingCalculator(scoreSets, quartet, 1)}</TableCell>
-                                        <TableCell>{roundTotalScoreCalculator(scoreSets, quartet, 1)}</TableCell>
+                                        <TableCell>{roundTotalMusCalculator(scoreSets, quartet, 1, scoreSets[0].contest.id)}</TableCell>
+                                        <TableCell>{roundTotalPerfCalculator(scoreSets, quartet, 1, scoreSets[0].contest.id)}</TableCell>
+                                        <TableCell>{roundTotalSingCalculator(scoreSets, quartet, 1, scoreSets[0].contest.id)}</TableCell>
+                                        <TableCell>{roundTotalScoreCalculator(scoreSets, quartet, 1, scoreSets[0].contest.id)}</TableCell>
                                     </TableRow>
                                     {scoreSets.map(scoreSet => {
                                         if (scoreSet.roundNumber === 1 && scoreSet.quartet?.id === quartet.id) {
@@ -106,10 +97,10 @@ export const QuartetContestPage: React.FC = () => {
                                     <TableRow>
                                         <TableCell>Semi-finals</TableCell>
                                         <TableCell />
-                                        <TableCell>{roundTotalMusCalculator(scoreSets, quartet, 2)}</TableCell>
-                                        <TableCell>{roundTotalPerfCalculator(scoreSets, quartet, 2)}</TableCell>
-                                        <TableCell>{roundTotalSingCalculator(scoreSets, quartet, 2)}</TableCell>
-                                        <TableCell>{roundTotalScoreCalculator(scoreSets, quartet, 2)}</TableCell>
+                                        <TableCell>{roundTotalMusCalculator(scoreSets, quartet, 2, scoreSets[0].contest.id)}</TableCell>
+                                        <TableCell>{roundTotalPerfCalculator(scoreSets, quartet, 2, scoreSets[0].contest.id)}</TableCell>
+                                        <TableCell>{roundTotalSingCalculator(scoreSets, quartet, 2, scoreSets[0].contest.id)}</TableCell>
+                                        <TableCell>{roundTotalScoreCalculator(scoreSets, quartet, 2, scoreSets[0].contest.id)}</TableCell>
                                     </TableRow>
                                     {scoreSets.map(scoreSet => {
                                         if (scoreSet.roundNumber === 2 && scoreSet.quartet?.id === quartet.id) {
@@ -126,30 +117,11 @@ export const QuartetContestPage: React.FC = () => {
                                         }
                                     })}
                                 </TableBody>)
-                            })}
-                        </Table>
-                    </TableContainer>
-
-                    :
-
-                    <TableContainer component={Paper}>
-                        <Table aria-label="contest table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Place</TableCell>
-                                    <TableCell>Quartet</TableCell>
-                                    <TableCell>Round</TableCell>
-                                    <TableCell>Songs</TableCell>
-                                    <TableCell>Mus</TableCell>
-                                    <TableCell>Perf</TableCell>
-                                    <TableCell>Sing</TableCell>
-                                    <TableCell>Total</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            {quartets.map(quartet => {
+                            }
+                            else {
                                 return (<TableBody key={quartet.name}>
                                     <TableRow>
-                                        <TableCell rowSpan={8}>{placeFinder(scoreSets, quartet)}</TableCell>
+                                        <TableCell rowSpan={8}>{placementFinder(scoreSets, scoreSets[0].contest, quartet)}</TableCell>
                                         <TableCell rowSpan={8}>
                                             <Link to={`/quartets/${quartet.id}`}>{quartet.name}</Link>
                                         </TableCell>
@@ -157,13 +129,13 @@ export const QuartetContestPage: React.FC = () => {
                                     <TableRow>
                                         <TableCell>Total</TableCell>
                                         <TableCell />
-                                        <TableCell>{totalMusCalculator(scoreSets, quartet)}</TableCell>
-                                        <TableCell>{totalPerfCalculator(scoreSets, quartet)}</TableCell>
-                                        <TableCell>{totalSingCalculator(scoreSets, quartet)}</TableCell>
-                                        <TableCell>{totalScoreCalculator(scoreSets, quartet)}</TableCell>
+                                        <TableCell>{totalMusCalculator(scoreSets, quartet, scoreSets[0].contest.id)}</TableCell>
+                                        <TableCell>{totalPerfCalculator(scoreSets, quartet, scoreSets[0].contest.id)}</TableCell>
+                                        <TableCell>{totalSingCalculator(scoreSets, quartet, scoreSets[0].contest.id)}</TableCell>
+                                        <TableCell>{totalScoreCalculator(scoreSets, quartet, scoreSets[0].contest.id)}</TableCell>
                                     </TableRow>
                                     {scoreSets.map(scoreSet => {
-                                        if (scoreSet.quartet?.id === quartet.id) {
+                                        if (scoreSet.contest.id === quartet.id) {
                                             return (<TableRow key={scoreSet.song.name}>
                                                 <TableCell />
                                                 <TableCell>
@@ -177,33 +149,34 @@ export const QuartetContestPage: React.FC = () => {
                                         }
                                     })}
                                 </TableBody>)
-                            })}
-                        </Table>
-                    </TableContainer>}
+                            }
+                        })}
+                    </Table>
+                </TableContainer>
             </div>)
 
                 :
 
                 (<div className="contest-page">
-                    {scoreSets[0].contest.totalRounds === 2 ?
-                        <TableContainer component={Paper}>
-                            <Table aria-label="contest-table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Place</TableCell>
-                                        <TableCell>Quartet</TableCell>
-                                        <TableCell>Round</TableCell>
-                                        <TableCell>Songs</TableCell>
-                                        <TableCell>Mus %</TableCell>
-                                        <TableCell>Perf %</TableCell>
-                                        <TableCell>Sing %</TableCell>
-                                        <TableCell>Total %</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                {quartets.map(quartet => {
+                    <TableContainer component={Paper}>
+                        <Table aria-label="contest-table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Place</TableCell>
+                                    <TableCell>Quartet</TableCell>
+                                    <TableCell>Round</TableCell>
+                                    <TableCell>Songs</TableCell>
+                                    <TableCell>Mus %</TableCell>
+                                    <TableCell>Perf %</TableCell>
+                                    <TableCell>Sing %</TableCell>
+                                    <TableCell>Total %</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            {quartets.map(quartet => {
+                                if (scoreSets[0].contest.totalRounds === 2) {
                                     return (<TableBody key={quartet.name}>
                                         <TableRow>
-                                            <TableCell rowSpan={8}>{placeFinder(scoreSets, quartet)}</TableCell>
+                                            <TableCell rowSpan={8}>{placementFinder(scoreSets, scoreSets[0].contest, quartet)}</TableCell>
                                             <TableCell rowSpan={8}>
                                                 <Link to={`/quartets/${quartet.id}`}>{quartet.name}</Link>
                                             </TableCell>
@@ -211,18 +184,18 @@ export const QuartetContestPage: React.FC = () => {
                                         <TableRow>
                                             <TableCell>Total</TableCell>
                                             <TableCell />
-                                            <TableCell>{(((totalMusCalculator(scoreSets, quartet)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((totalPerfCalculator(scoreSets, quartet)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((totalSingCalculator(scoreSets, quartet)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((totalScoreCalculator(scoreSets, quartet)) / 4) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalMusCalculator(scoreSets, quartet, scoreSets[0].contest.id)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalPerfCalculator(scoreSets, quartet, scoreSets[0].contest.id)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalSingCalculator(scoreSets, quartet, scoreSets[0].contest.id)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalScoreCalculator(scoreSets, quartet, scoreSets[0].contest.id)) / 4) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>Finals</TableCell>
                                             <TableCell />
-                                            <TableCell>{(((roundTotalMusCalculator(scoreSets, quartet, 1)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((roundTotalPerfCalculator(scoreSets, quartet, 1)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((roundTotalSingCalculator(scoreSets, quartet, 1)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((roundTotalScoreCalculator(scoreSets, quartet, 1)) / 2) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalMusCalculator(scoreSets, quartet, 1, scoreSets[0].contest.id)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalPerfCalculator(scoreSets, quartet, 1, scoreSets[0].contest.id)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalSingCalculator(scoreSets, quartet, 1, scoreSets[0].contest.id)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalScoreCalculator(scoreSets, quartet, 1, scoreSets[0].contest.id)) / 2) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
                                         </TableRow>
                                         {scoreSets.map(scoreSet => {
                                             if (scoreSet.roundNumber === 1 && scoreSet.quartet?.id === quartet.id) {
@@ -241,10 +214,10 @@ export const QuartetContestPage: React.FC = () => {
                                         <TableRow>
                                             <TableCell>Semi-finals</TableCell>
                                             <TableCell />
-                                            <TableCell>{(((roundTotalMusCalculator(scoreSets, quartet, 2)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((roundTotalPerfCalculator(scoreSets, quartet, 2)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((roundTotalSingCalculator(scoreSets, quartet, 2)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((roundTotalScoreCalculator(scoreSets, quartet, 2)) / 2) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalMusCalculator(scoreSets, quartet, 2, scoreSets[0].contest.id)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalPerfCalculator(scoreSets, quartet, 2, scoreSets[0].contest.id)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalSingCalculator(scoreSets, quartet, 2, scoreSets[0].contest.id)) / 2) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((roundTotalScoreCalculator(scoreSets, quartet, 2, scoreSets[0].contest.id)) / 2) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
                                         </TableRow>
                                         {scoreSets.map(scoreSet => {
                                             if (scoreSet.roundNumber === 2 && scoreSet.quartet?.id === quartet.id) {
@@ -261,30 +234,11 @@ export const QuartetContestPage: React.FC = () => {
                                             }
                                         })}
                                     </TableBody>)
-                                })}
-                            </Table>
-                        </TableContainer>
-
-                        :
-
-                        <TableContainer component={Paper}>
-                            <Table aria-label="contest table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Place</TableCell>
-                                        <TableCell>Quartet</TableCell>
-                                        <TableCell>Round</TableCell>
-                                        <TableCell>Songs</TableCell>
-                                        <TableCell>Mus %</TableCell>
-                                        <TableCell>Perf %</TableCell>
-                                        <TableCell>Sing %</TableCell>
-                                        <TableCell>Total %</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                {quartets.map(quartet => {
+                                }
+                                else {
                                     return (<TableBody key={quartet.name}>
                                         <TableRow>
-                                            <TableCell rowSpan={8}>{placeFinder(scoreSets, quartet)}</TableCell>
+                                            <TableCell rowSpan={8}>{placementFinder(scoreSets, scoreSets[0].contest, quartet)}</TableCell>
                                             <TableCell rowSpan={8}>
                                                 <Link to={`/quartets/${quartet.id}`}>{quartet.name}</Link>
                                             </TableCell>
@@ -292,13 +246,13 @@ export const QuartetContestPage: React.FC = () => {
                                         <TableRow>
                                             <TableCell>Total</TableCell>
                                             <TableCell />
-                                            <TableCell>{(((totalMusCalculator(scoreSets, quartet)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((totalPerfCalculator(scoreSets, quartet)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((totalSingCalculator(scoreSets, quartet)) / 4) / (scoreSets[0].contest.panelSize / 3)).toFixed(2)}</TableCell>
-                                            <TableCell>{(((totalScoreCalculator(scoreSets, quartet)) / 4) / (scoreSets[0].contest.panelSize)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalMusCalculator(scoreSets, quartet, scoreSets[0].contest.id)) / (scoreSets[0].contest.panelSize / 3) / 2)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalPerfCalculator(scoreSets, quartet, scoreSets[0].contest.id)) / (scoreSets[0].contest.panelSize / 3) / 2)).toFixed(2)}</TableCell>
+                                            <TableCell>{(((totalSingCalculator(scoreSets, quartet, scoreSets[0].contest.id)) / (scoreSets[0].contest.panelSize / 3) / 2)).toFixed(2)}</TableCell>
+                                            <TableCell>{((totalScoreCalculator(scoreSets, quartet, scoreSets[0].contest.id)) / (scoreSets[0].contest.panelSize) / 2).toFixed(2)}</TableCell>
                                         </TableRow>
                                         {scoreSets.map(scoreSet => {
-                                            if (scoreSet.quartet?.id === quartet.id) {
+                                            if (scoreSet.quartet?.id === quartet?.id) {
                                                 return (<TableRow key={scoreSet.song.name}>
                                                     <TableCell />
                                                     <TableCell>
@@ -312,9 +266,10 @@ export const QuartetContestPage: React.FC = () => {
                                             }
                                         })}
                                     </TableBody>)
-                                })}
-                            </Table>
-                        </TableContainer>}
+                                }
+                            })
+                            }</Table>
+                    </TableContainer>
                 </div>)}
         </>
     )

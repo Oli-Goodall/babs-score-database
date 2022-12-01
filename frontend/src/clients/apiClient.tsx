@@ -45,108 +45,119 @@ export interface Song {
     name: string;
 }
 
-export const totalMusCalculator = (scoreSets: ScoreSet[], quartet: Quartet | undefined) => {
+export const totalMusCalculator = (scoreSets: ScoreSet[], competitor: Quartet | Chorus | undefined, contestId: number) => {
     let totalMusScore = 0;
-    if(quartet === undefined) {
-        console.log("Oops, quartet is undefined.")
+    if(competitor === undefined) {
+        console.log("Oops, competitor is undefined.")
      }
     scoreSets.forEach(scoreSet => {
-        if (scoreSet.quartet?.id === quartet?.id) {
+        if ((scoreSet.quartet?.id === competitor?.id || scoreSet.chorus?.id === competitor?.id) && contestId === scoreSet.contest.id) {
             totalMusScore += scoreSet.mus;
         }
     })
     return (totalMusScore)
 }
 
-export const totalPerfCalculator = (scoreSets: ScoreSet[], quartet: Quartet | undefined) => {
+export const totalPerfCalculator = (scoreSets: ScoreSet[], competitor: Quartet | Chorus | undefined, contestId: number) => {
     let totalPerfScore = 0;
-    if(quartet === undefined) {
-        console.log("Oops, quartet is undefined.")
+    if(competitor === undefined) {
+        console.log("Oops, competitor is undefined.")
      }
     scoreSets.forEach(scoreSet => {
-        if (scoreSet.quartet?.id === quartet?.id) {
+        if ((scoreSet.quartet?.id === competitor?.id || scoreSet.chorus?.id === competitor?.id) && contestId === scoreSet.contest.id) {
             totalPerfScore += scoreSet.perf;
         }
     })
     return (totalPerfScore)
 }
 
-export const totalSingCalculator = (scoreSets: ScoreSet[], quartet: Quartet | undefined) => {
+export const totalSingCalculator = (scoreSets: ScoreSet[], competitor: Quartet | Chorus | undefined, contestId: number) => {
     let totalSingScore = 0;
-    if(quartet === undefined) {
-        console.log("Oops, quartet is undefined.")
+    if(competitor === undefined) {
+        console.log("Oops, competitor is undefined.")
      }
     scoreSets.forEach(scoreSet => {
-        if (scoreSet.quartet?.id === quartet?.id) {
+        if ((scoreSet.quartet?.id === competitor?.id || scoreSet.chorus?.id === competitor?.id) && contestId === scoreSet.contest.id) {
             totalSingScore += scoreSet.sing;
         }
     })
     return (totalSingScore)
 }
 
-export const totalScoreCalculator = (scoreSets: ScoreSet[], quartet: Quartet | undefined) => {
+export const totalScoreCalculator = (scoreSets: ScoreSet[], competitor: Quartet | Chorus | undefined, contestId: number) => {
     let totalScore = 0;
-    if(quartet === undefined) {
-        console.log("Oops, quartet is undefined.")
+    if(competitor === undefined) {
+        console.log("Oops, competitor is undefined.")
      }
     scoreSets.forEach(scoreSet => {
-        if (scoreSet.quartet?.id === quartet?.id) {
+        if ((scoreSet.quartet?.id === competitor?.id || scoreSet.chorus?.id === competitor?.id) && contestId === scoreSet.contest.id) {
             totalScore += scoreSet.mus + scoreSet.perf + scoreSet.sing;
         }
     })
     return (totalScore)
 }
 
-export const roundTotalMusCalculator = (scoreSets: ScoreSet[], quartet: Quartet | undefined, roundNumber: number) => {
+export const roundTotalMusCalculator = (scoreSets: ScoreSet[], competitor: Quartet | Chorus | undefined, roundNumber: number, contestId: number) => {
     let roundTotalMusScore = 0;
-    if(quartet === undefined) {
-        console.log("Oops, quartet is undefined.")
+    if(competitor === undefined) {
+        console.log("Oops, competitor is undefined.")
      }
     scoreSets.forEach(scoreSet => {
-        if (scoreSet.quartet?.id === quartet?.id && scoreSet.roundNumber === roundNumber) {
+        if ((scoreSet.quartet?.id === competitor?.id || scoreSet.chorus?.id === competitor?.id) && scoreSet.roundNumber === roundNumber && contestId === scoreSet.contest.id) {
             roundTotalMusScore += scoreSet.mus;
         }
     })
     return (roundTotalMusScore)
 }
 
-export const roundTotalPerfCalculator = (scoreSets: ScoreSet[], quartet: Quartet | undefined, roundNumber: number) => {
+export const roundTotalPerfCalculator = (scoreSets: ScoreSet[], competitor: Quartet | Chorus | undefined, roundNumber: number, contestId: number) => {
     let roundTotalPerfScore = 0;
-    if(quartet === undefined) {
-        console.log("Oops, quartet is undefined.")
+    if(competitor === undefined) {
+        console.log("Oops, competitor is undefined.")
      }
     scoreSets.forEach(scoreSet => {
-        if (scoreSet.quartet?.id === quartet?.id && scoreSet.roundNumber === roundNumber) {
+        if ((scoreSet.quartet?.id === competitor?.id || scoreSet.chorus?.id === competitor?.id) && scoreSet.roundNumber === roundNumber && contestId === scoreSet.contest.id) {
             roundTotalPerfScore += scoreSet.perf;
         }
     })
     return (roundTotalPerfScore)
 }
 
-export const roundTotalSingCalculator = (scoreSets: ScoreSet[], quartet: Quartet | undefined, roundNumber: number) => {
+export const roundTotalSingCalculator = (scoreSets: ScoreSet[], competitor: Quartet | Chorus | undefined, roundNumber: number, contestId: number) => {
     let roundTotalSingScore = 0;
-    if(quartet === undefined) {
-        console.log("Oops, quartet is undefined.")
+    if(competitor === undefined) {
+        console.log("Oops, competitor is undefined.")
      }
     scoreSets.forEach(scoreSet => {
-        if (scoreSet.quartet?.id === quartet?.id && scoreSet.roundNumber === roundNumber) {
+        if ((scoreSet.quartet?.id === competitor?.id || scoreSet.chorus?.id === competitor?.id) && scoreSet.roundNumber === roundNumber && contestId === scoreSet.contest.id) {
             roundTotalSingScore += scoreSet.sing;
         }
     })
     return (roundTotalSingScore)
 }
 
-export const roundTotalScoreCalculator = (scoreSets: ScoreSet[], quartet: Quartet | undefined, roundNumber: number) => {
+export const roundTotalScoreCalculator = (scoreSets: ScoreSet[], competitor: Quartet | Chorus | undefined, roundNumber: number, contestId: number) => {
     let roundTotalScore = 0;
-    if(quartet === undefined) {
-       console.log("Oops, quartet is undefined.")
-    }
+    if(competitor === undefined) {
+        console.log("Oops, competitor is undefined.")
+     }
     scoreSets.forEach(scoreSet => {
-        if (scoreSet.quartet?.id === quartet?.id && scoreSet.roundNumber === roundNumber) {
+        if ((scoreSet.quartet?.id === competitor?.id || scoreSet.chorus?.id === competitor?.id) && scoreSet.roundNumber === roundNumber && contestId === scoreSet.contest.id) {
             roundTotalScore += scoreSet.mus + scoreSet.perf + scoreSet.sing;
         }
     })
     return (roundTotalScore)
+}
+
+export const placementFinder = (scoreSets: ScoreSet[], contest: Contest, competitor: Quartet | Chorus) => {
+    let i;
+    for (i in scoreSets) {
+    if (scoreSets[i].contest.id === contest.id && (scoreSets[i].chorus?.id === competitor.id ||scoreSets[i].quartet?.id === competitor.id )){
+        console.log(scoreSets[i].place);
+        return scoreSets[i].place}
+    }
+
+
 }
 
 export const getAllQuartetContests = async (): Promise<Contest[]> => {

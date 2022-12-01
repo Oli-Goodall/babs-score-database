@@ -39,6 +39,7 @@ namespace BabsScoreDatabase.Repositories
                 .Include(s => s.Quartet)
                 .Include(s => s.Chorus)
                 .Include(s => s.Contest)
+                .Include(s => s.Contest.Year)
                 .Where(s => s.Contest.Id == contestId)
                 .OrderBy(s => s.Place);
         }
@@ -49,8 +50,9 @@ namespace BabsScoreDatabase.Repositories
                 .Include(s => s.Song)
                 .Include(s => s.Quartet)
                 .Include(s => s.Contest)
+                .Include(s => s.Contest.Year)
                 .Where(s => s.Quartet.Id == quartetId)
-                .OrderBy(s => s.Place);
+                .OrderBy(s => s.Contest.Year);
         }
          public IEnumerable<ScoreSet> GetScoreSetsByChorusId(int chorusId)
         {
@@ -58,8 +60,9 @@ namespace BabsScoreDatabase.Repositories
                 .Include(s => s.Song)
                 .Include(s => s.Chorus)
                 .Include(s => s.Contest)
+                .Include(s => s.Contest.Year)
                 .Where(s => s.Chorus.Id == chorusId)
-                .OrderBy(s => s.Place);
+                .OrderBy(s => s.Contest.Year);
         }
         public IEnumerable<ScoreSet> GetScoreSetsBySongId(int songId)
         {
@@ -68,6 +71,7 @@ namespace BabsScoreDatabase.Repositories
                 .Include(s => s.Chorus)
                 .Include(s => s.Quartet)
                 .Include(s => s.Contest)
+                .Include(s => s.Contest.Year)
                 .Where(s => s.Song.Id == songId)
                 .OrderBy(s => s.Contest.Year);
         }
