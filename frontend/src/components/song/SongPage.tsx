@@ -8,10 +8,11 @@ export const SongPage: React.FunctionComponent = () => {
     const [showRawScores, setShowRawScores] = useState(false);
     const contests: Contest[] = [];
 
-    const { songId } = useParams<{ songId: string }>();
+    const { songId } = useParams();
 
     useEffect(() => {
-        getScoreSetsBySongId(parseInt(songId)).then(setScoreSets);
+        if (songId !== undefined){
+        getScoreSetsBySongId(parseInt(songId)).then(setScoreSets)}
     }, []);
 
     function containsObject(obj: Contest, list: Contest[]) {
@@ -182,7 +183,7 @@ export const SongPage: React.FunctionComponent = () => {
                                                 <Link to={`/choruses/contest/${contest.id}`}>{contest.name}</Link>
                                             </TableCell>
                                             <TableCell>
-                                                <Link to={`/choruses/${scoreSet.quartet?.id}`}>{scoreSet.chorus?.name}</Link>
+                                                <Link to={`/choruses/${scoreSet.chorus?.id}`}>{scoreSet.chorus?.name}</Link>
                                             </TableCell>
                                             <TableCell>{contest.year.contestYear}</TableCell>
                                             <TableCell>{(scoreSet.mus / (scoreSet.contest.panelSize / 3)).toFixed(2)}</TableCell>

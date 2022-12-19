@@ -8,10 +8,11 @@ export const QuartetContestPage: React.FC = () => {
     const [showRawScores, setShowRawScores] = useState(false);
     const quartets: Quartet[] = [];
 
-    const { contestId } = useParams<{ contestId: string }>();
+    const { contestId } = useParams();
 
     useEffect(() => {
-        getScoreSetsByContestId(parseInt(contestId)).then(setScoreSets);
+        if (contestId !== undefined){
+        getScoreSetsByContestId(parseInt(contestId)).then(setScoreSets)}
     }, []);
 
     function containsObject(obj: Quartet, list: Quartet[]) {

@@ -152,7 +152,7 @@ export const roundTotalScoreCalculator = (scoreSets: ScoreSet[], competitor: Qua
 export const placementFinder = (scoreSets: ScoreSet[], contest: Contest, competitor: Quartet | Chorus) => {
     let i;
     for (i in scoreSets) {
-    if (scoreSets[i].contest.id === contest.id && (scoreSets[i].chorus?.id === competitor.id ||scoreSets[i].quartet?.id === competitor.id )){
+    if (scoreSets[i].contest.id === contest.id && (scoreSets[i].chorus?.id === competitor.id || scoreSets[i].quartet?.id === competitor.id )){
         console.log(scoreSets[i].place);
         return scoreSets[i].place}
     }
@@ -199,5 +199,23 @@ export const getScoreSetsByChorusId = async (id: number): Promise<ScoreSet[]> =>
 export const getScoreSetsBySongId = async (id: number): Promise<ScoreSet[]> => {
     const response = await fetch(`http://localhost:5000/songs/${id}`);
     const contestListResponse: ListResponse<ScoreSet> = await response.json();
+    return contestListResponse.items;
+}
+
+export const getQuartetBySearchQuery = async (query: string): Promise<Quartet[]> => {
+    const response = await fetch(`http://localhost:5000/quartets/search?=${query}`);
+    const contestListResponse: ListResponse<Quartet> = await response.json();
+    return contestListResponse.items;
+}
+
+export const getChorusBySearchQuery = async (query: string): Promise<Chorus[]> => {
+    const response = await fetch(`http://localhost:5000/choruses/search?=${query}`);
+    const contestListResponse: ListResponse<Chorus> = await response.json();
+    return contestListResponse.items;
+}
+
+export const getSongBySearchQuery = async (query: string): Promise<Song[]> => {
+    const response = await fetch(`http://localhost:5000/songs/search?=${query}`);
+    const contestListResponse: ListResponse<Song> = await response.json();
     return contestListResponse.items;
 }

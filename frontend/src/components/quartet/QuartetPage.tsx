@@ -12,10 +12,11 @@ export const QuartetPage: React.FunctionComponent = () => {
     };
     const contests: Contest[] = [];
 
-    const { quartetId } = useParams<{ quartetId: string }>();
+    const { quartetId } = useParams();
 
     useEffect(() => {
-        getScoreSetsByQuartetId(parseInt(quartetId)).then(setScoreSets);
+        if (quartetId !== undefined){
+        getScoreSetsByQuartetId(parseInt(quartetId)).then(setScoreSets)}
     }, []);
 
     if (scoreSets !== undefined) {

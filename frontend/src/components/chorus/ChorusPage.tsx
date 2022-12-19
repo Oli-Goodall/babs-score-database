@@ -12,10 +12,11 @@ export const ChorusPage: React.FunctionComponent = () => {
     };
     const contests: Contest[] = [];
 
-    const { chorusId } = useParams<{ chorusId: string }>();
+    const { chorusId } = useParams();
 
     useEffect(() => {
-        getScoreSetsByChorusId(parseInt(chorusId)).then(setScoreSets);
+        if (chorusId !== undefined){
+        getScoreSetsByChorusId(parseInt(chorusId)).then(setScoreSets)}
     }, []);
 
     if (scoreSets !== undefined) {
