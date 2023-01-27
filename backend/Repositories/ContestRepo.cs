@@ -11,6 +11,7 @@ namespace BabsScoreDatabase.Repositories
         IEnumerable<Contest> GetAllContests();
         IEnumerable<Contest> GetAllQuartetContests();
         IEnumerable<Contest> GetAllChorusContests();
+        IEnumerable<Contest> GetContestBySearchQuery(string query);
         // IEnumerable<Contest> GetContestsByYear(int contestYear);
     }
 
@@ -48,6 +49,12 @@ namespace BabsScoreDatabase.Repositories
             return _context.Contest
                 .Single(s => s.Id == contestId);
         }
+
+        public IEnumerable<Contest> GetContestBySearchQuery(string query)
+        {
+            return _context.Contest.ToList()
+                .Where(s => s.Name.IndexOf(query, System.StringComparison.OrdinalIgnoreCase) > -1);
+        }  
 
         // public IEnumerable<Contest> GetContestsByYear(int contestYear)
         // {

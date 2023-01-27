@@ -23,6 +23,7 @@ namespace BabsScoreDatabase.Services
         {
             return _chorus.GetChorusById(chorusId);
         }
+        
         public IEnumerable<Chorus> GetChorusBySearchQuery(string query)
         {
             return _chorus.GetChorusBySearchQuery(query);

@@ -78,5 +78,18 @@ namespace BabsScoreDatabase.Controllers
                 return NotFound();
             }
         }
+                [HttpGet("search/{query}")]
+        public ActionResult<ListResponse<Contest>> GetContestBySearchQuery([FromRoute] string query)
+        {
+            try
+            {
+                var contest = _contests.GetContestBySearchQuery(query);
+                return new ListResponse<Contest>(contest);
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
+        }
     }
 }
