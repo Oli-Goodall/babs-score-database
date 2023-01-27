@@ -1,12 +1,14 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using BabsScoreDatabase.Models.Database;
+using System.Collections.Generic;
 
 namespace BabsScoreDatabase.Repositories
 {
     public interface IQuartetRepo
     {
         Quartet GetQuartetById(int quartetId);
+        IEnumerable<Quartet> GetQuartetBySearchQuery(string query);
     }
 
     public class QuartetRepo : IQuartetRepo
@@ -24,5 +26,11 @@ namespace BabsScoreDatabase.Repositories
                 .Include(s => s.Name)
                 .Single(s => s.Id == quartetId);
         }
+
+        public IEnumerable<Quartet> GetQuartetBySearchQuery(string query)
+        {
+            return _context.Quartet.ToList()
+                .Where(s => s.Name.IndexOf(query, System.StringComparison.OrdinalIgnoreCase) > -1);
+        }    
     }
 }

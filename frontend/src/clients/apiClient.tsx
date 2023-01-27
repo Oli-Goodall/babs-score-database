@@ -203,19 +203,25 @@ export const getScoreSetsBySongId = async (id: number): Promise<ScoreSet[]> => {
 }
 
 export const getQuartetBySearchQuery = async (query: string): Promise<Quartet[]> => {
-    const response = await fetch(`http://localhost:5000/quartets/search?=${query}`);
+    const response = await fetch(`http://localhost:5000/quartets/search/${query}`);
     const contestListResponse: ListResponse<Quartet> = await response.json();
     return contestListResponse.items;
 }
 
 export const getChorusBySearchQuery = async (query: string): Promise<Chorus[]> => {
-    const response = await fetch(`http://localhost:5000/choruses/search?=${query}`);
+    const response = await fetch(`http://localhost:5000/choruses/search/${query}`);
     const contestListResponse: ListResponse<Chorus> = await response.json();
     return contestListResponse.items;
 }
 
+export const getContestBySearchQuery = async (query: string): Promise<Contest[]> => {
+    const response = await fetch(`http://localhost:5000/contests/search/${query}`);
+    const contestListResponse: ListResponse<Contest> = await response.json();
+    return contestListResponse.items;
+}
+
 export const getSongBySearchQuery = async (query: string): Promise<Song[]> => {
-    const response = await fetch(`http://localhost:5000/songs/search?=${query}`);
+    const response = await fetch(`http://localhost:5000/songs/search/${query}`);
     const contestListResponse: ListResponse<Song> = await response.json();
     return contestListResponse.items;
 }

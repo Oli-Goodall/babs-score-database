@@ -10,14 +10,14 @@ import { QuartetPage } from "./components/quartet/QuartetPage";
 import { SongPage } from "./components/song/SongPage";
 import { ChorusContestPage } from "./components/chorus/contest/ChorusContestPage";
 import { ChorusContestListPage } from "./components/chorus/contest/ChorusContestListPage";
-import { QuartetSearchPage } from "./components/quartet/QuartetSearchPage";
+import { SearchPage } from "./components/search/SearchPage";
 
 const SiteRoutes: React.FunctionComponent = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />}/>
       <Route path="/quartets/contestlist" element={<QuartetContestListPage />} />
-      <Route path="/quartets/search" element={<QuartetSearchPage />} />
+      <Route path="/search" element={<SearchPage />} />
       <Route path="/quartets/:quartetId" element={<QuartetPage />} />
       <Route path="/quartets/contest/:contestId" element={<QuartetContestPage />} />
       <Route path="/choruses/contestlist" element={<ChorusContestListPage />} />
