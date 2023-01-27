@@ -36,5 +36,18 @@ namespace BabsScoreDatabase.Controllers
                 return NotFound();
             }
         }
+        [HttpGet("search/{query}")]
+        public ActionResult<ListResponse<Chorus>> GetChorusBySearchQuery([FromRoute] string query)
+        {
+            try
+            {
+                var chorus = _choruses.GetChorusBySearchQuery(query);
+                return new ListResponse<Chorus>(chorus);
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
+        }
     }
 }
