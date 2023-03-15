@@ -41,7 +41,7 @@ namespace BabsScoreDatabase.Repositories
                 .Include(s => s.Contest)
                 .Include(s => s.Contest.Year)
                 .Where(s => s.Contest.Id == contestId)
-                .OrderBy(s => s.Place);
+                .OrderBy(s => s.Id);
         }
 
         public IEnumerable<ScoreSet> GetScoreSetsByQuartetId(int quartetId)
