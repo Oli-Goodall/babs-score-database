@@ -136,7 +136,7 @@ export const ChorusContestPage: React.FC = () => {
                                         <TableCell>{totalScoreCalculator(scoreSets, chorus, scoreSets[0].contest.id)}</TableCell>
                                     </TableRow>
                                     {scoreSets.map(scoreSet => {
-                                        if (scoreSet.contest.id === chorus.id) {
+                                        if (scoreSet.chorus?.id === chorus.id) {
                                             return (<TableRow key={scoreSet.song.name}>
                                                 <TableCell />
                                                 <TableCell>
