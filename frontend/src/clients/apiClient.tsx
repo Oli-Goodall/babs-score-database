@@ -153,11 +153,8 @@ export const placementFinder = (scoreSets: ScoreSet[], contest: Contest, competi
     let i;
     for (i in scoreSets) {
     if (scoreSets[i].contest.id === contest.id && (scoreSets[i].chorus?.id === competitor.id || scoreSets[i].quartet?.id === competitor.id )){
-        console.log(scoreSets[i].place);
         return scoreSets[i].place}
     }
-
-
 }
 
 export const getAllQuartetContests = async (): Promise<Contest[]> => {
