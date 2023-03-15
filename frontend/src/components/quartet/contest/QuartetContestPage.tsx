@@ -35,8 +35,6 @@ export const QuartetContestPage: React.FC = () => {
         return <p>Loading...</p>;
     }
 
-    console.log(scoreSets);
-
     return (
         <>
             <h1>{scoreSets[0].contest.name}</h1>
